@@ -1,8 +1,6 @@
 SmartChatRoom 
 ==========================
 
-![Smartmesh](https://smartmesh.io/wp-content/uploads/2017/10/logopng%E7%99%BD%E8%89%B2.png =100x100)(https://smartmesh.io) 
-
 Smartchatroom is a distributed, fault-tolerant technology that allows the creation
 of large-scale instant messaging applications. The server can reliably support
 thousands of simultaneous users on a single node and has been designed to
