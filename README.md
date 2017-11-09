@@ -81,4 +81,4 @@ type a command like:
 Links
 -----
 
-- Community site: https://www.ejabberd.im
+- Community site: https://smartmesh.io
