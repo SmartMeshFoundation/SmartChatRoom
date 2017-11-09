@@ -94,7 +94,7 @@ handle_info({route, From, Nick, {xmlelement, "message", Attrs, _} = Packet}, Sta
     true ->
       case Type of
         "groupchat" -> 
-            NewPacket=aa_hookhandler:add_msgTime(Packet),
+            NewPacket=muc_room_util:add_msgTime(Packet),
             lists:foreach(
               fun({_LJID, Info}) -> 
                 ejabberd_router:route( 

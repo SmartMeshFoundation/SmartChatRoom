@@ -152,3 +152,20 @@ add_message_to_history(From, Packet, StateData) ->
     Q1 = lqueue_in({From, Packet},
            StateData#state.history),
     StateData#state{history = Q1}.
+
+%% Add a timestamp for each message
+add_msgTime(Packet) ->
+  {M,S,SS} = now(), 
+  MsgTime = lists:sublist(erlang:integer_to_list(M*1000000000000+S*1000000+SS),1,13),
+  {Tag,E,Attr,Body} = Packet,
+  MT=  proplists:get_value("msgtype",Attr),
+  case MT of
+    "system" ->
+      case proplists:get_value("msgTime",Attr) of
+        undefined -> RAttr1 = [{"msgTime",MsgTime}|Attr];
+        _ -> RAttr1 = Attr
+      end;
+    _->
+      {RAttr1} = ej:set({<<"msgTime">>},{Attr},MsgTime)
+  end,
+  {Tag,E,RAttr1,Body}.
