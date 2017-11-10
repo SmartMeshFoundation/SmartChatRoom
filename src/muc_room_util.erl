@@ -24,6 +24,7 @@
 -module(muc_room_util).
 -author('leon@smartmesh.io').
 
+-include("ejabberd.hrl").
 -include("mod_muc_room.hrl").
 -include("jlib.hrl").
 -compile(export_all).
@@ -94,18 +95,19 @@ get_max_users(StateData) ->
     gen_mod:get_module_opt(StateData#state.server_host,
     mod_muc, max_users, ?MAX_USERS_DEFAULT).
 
-add_new_user(From, Nick, {xmlelement, _, _Attrs, _Els} = Packet, StateData) ->
+add_new_user(From, Nick, {xmlelement, _, _Attrs, _Els} = _Packet, StateData) ->
     MaxUsers = get_max_users(StateData),
     NUsers = dict:fold(fun(_, _, Acc) -> Acc + 1 end, 0,StateData#state.users),
     case (NUsers < MaxUsers) of
       false ->
           % max user reached 
-          EEls = {xmlelement, "error", [],
-                [{xmlelement,"body",[],[{xmlcdata,"max user reached"}]}]},
-          Err = jlib:make_error_reply(
-                Packet,
-                EEls),
-          ejabberd_router:route( jlib:jid_replace_resource(StateData#state.jid, Nick),From, Err),
+          %% EEls = {xmlelement, "error", [],
+          %%       [{xmlelement,"body",[],[{xmlcdata,"max user reached"}]}]},
+          %% Err = jlib:make_error_reply(
+          %%       Packet,
+          %%       EEls),
+          %% ejabberd_router:route( jlib:jid_replace_resource(StateData#state.jid, Nick),From, Err),
+          ?ERROR_MSG("max user reached .. ~p~n",[From]),
           StateData;
       _ ->
          NewState = add_online_user(From, Nick, StateData),

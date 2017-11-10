@@ -178,5 +178,9 @@ process_presence(From, Nick, {xmlelement, "presence", Attrs, _Els} = Packet, Sta
         _ ->
           muc_room_util:send_history(From, StateData,xml:get_attr_s("msgTime",Attrs)),
           StateData
-      end
+      end;
+    _->
+      ?ERROR_MSG("Type .. ~p~n",[Type]),
+      ?ERROR_MSG("Pact .. ~p~n",[Packet]),
+      StateData
   end.
